@@ -1,0 +1,261 @@
+/*
+ * Glass — an iOS-style translucent material for floating chrome.
+ *
+ * Rule: glass is only used where content scrolls *underneath* a surface
+ * (bars, sticky headers, sheets, dropdowns). Information surfaces — match
+ * groups, odds, slip tickets — stay solid so prices are always crisp.
+ *
+ * The material has three parts:
+ *   tint     — a translucent wash of the brand teal
+ *   blur     — backdrop blur with boosted saturation, so colour bleeds through
+ *   edge     — a bright top hairline (specular highlight) and faint rim
+ */
+:root {
+  --glass-tint: rgba(10, 34, 43, 0.58);
+  --glass-tint-strong: rgba(9, 30, 38, 0.78);
+  --glass-blur: blur(22px) saturate(180%);
+  --glass-blur-strong: blur(32px) saturate(170%);
+  --glass-rim: rgba(255, 255, 255, 0.09);
+  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+  --glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 45%);
+  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Top bar + ticker: one glass slab ---------- */
+
+.shell__head {
+  background: var(--glass-sheen), var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: inset 0 -1px 0 var(--glass-rim);
+}
+
+.topbar {
+  background: transparent;
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.ticker {
+  background: transparent;
+  border-bottom: 0;
+}
+
+.ticker__label,
+.ticker__item {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.ticker__label:hover,
+.ticker__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Search field sits in the glass as a recessed well */
+.search__input {
+  background: rgba(2, 12, 16, 0.45);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.wallet {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: var(--glass-edge), 0 0 0 1px var(--glass-rim);
+}
+
+.wallet:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+/* ---------- Dropdowns and sheets ---------- */
+
+.search__panel {
+  background: var(--glass-sheen), var(--glass-tint-strong);
+  backdrop-filter: var(--glass-blur-strong);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  border-color: var(--glass-rim);
+  box-shadow: var(--glass-edge), var(--glass-shadow);
+}
+
+.search__item.is-active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.drawer__backdrop {
+  background: rgba(1, 8, 11, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.drawer__panel {
+  background: var(--glass-sheen), var(--glass-tint-strong);
+  backdrop-filter: var(--glass-blur-strong);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+}
+
+.drawer--bottom .drawer__panel {
+  box-shadow: var(--glass-edge), 0 0 0 1px var(--glass-rim), 0 -12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.drawer--left .drawer__panel {
+  border-right-color: var(--glass-rim);
+}
+
+.drawer__head {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- Sticky bars inside scrolling content ---------- */
+
+.market-nav {
+  background: var(--glass-tint);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.bpanel > .tabs--underline,
+.slip__foot {
+  background: var(--glass-tint-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.slip__foot {
+  border-top-color: var(--glass-rim);
+}
+
+/* ---------- Mobile: floating glass capsules ---------- */
+
+@media (max-width: 1099px) {
+  :root {
+    --capsule-gap: 10px;
+    --mbars-h: calc(var(--slipbar-h) + var(--tabbar-h) + var(--capsule-gap) * 3);
+  }
+
+  .shell__main {
+    padding-bottom: calc(var(--mbars-h) + var(--s-6) + env(safe-area-inset-bottom));
+  }
+
+  .mbars {
+    display: grid;
+    gap: var(--capsule-gap);
+    padding: 0 12px calc(var(--capsule-gap) + env(safe-area-inset-bottom));
+    pointer-events: none;
+  }
+
+  .mbars > * {
+    pointer-events: auto;
+  }
+
+  .slipbar,
+  .tabbar {
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    background: var(--glass-sheen), var(--glass-tint-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-edge), 0 0 0 1px var(--glass-rim), var(--glass-shadow);
+  }
+
+  /* Slip bar: a pill that sits above the tab bar */
+  .slipbar {
+    height: var(--slipbar-h);
+    margin: 0 6px;
+    width: auto;
+    border-radius: 999px;
+    padding: 0 var(--s-4) 0 10px;
+  }
+
+  .slipbar__count {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* With picks, the pill fills with tinted mint glass */
+  .slipbar.has-picks {
+    background: var(--glass-sheen), rgba(198, 246, 242, 0.88);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 0 1px rgba(198, 246, 242, 0.5), 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .slipbar.has-picks .slipbar__count {
+    background: var(--on-mint);
+  }
+
+  /* Tab bar: a floating capsule, active tab marked by a lens of lighter glass */
+  .tabbar {
+    height: var(--tabbar-h);
+    padding: 5px;
+    border-radius: 30px;
+    gap: 2px;
+  }
+
+  .tabbar__link {
+    border-radius: 25px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .tabbar__link[aria-current='page'] {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .tabbar__link[aria-current='page']::before {
+    content: none;
+  }
+
+  .tabbar__link:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .topbar__overlay {
+    background: var(--glass-tint-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+  }
+
+  /* Pinned slip footer on the Bets page clears the floating bars */
+  .bets-col .slip__foot {
+    bottom: calc(var(--mbars-h) - var(--slipbar-h) - var(--capsule-gap) + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------- Fallbacks ---------- */
+
+/* No backdrop-filter support: fall back to solid surfaces */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .shell__head,
+  .search__panel,
+  .drawer__panel,
+  .market-nav,
+  .bpanel > .tabs--underline,
+  .slip__foot,
+  .slipbar,
+  .tabbar,
+  .topbar__overlay {
+    background: var(--bg-1);
+  }
+
+  .slipbar.has-picks {
+    background: var(--mint);
+  }
+}
+
+/* Respect the OS "reduce transparency" setting */
+@media (prefers-reduced-transparency: reduce) {
+  .shell__head,
+  .search__panel,
+  .drawer__panel,
+  .market-nav,
+  .bpanel > .tabs--underline,
+  .slip__foot,
+  .slipbar,
+  .tabbar,
+  .topbar__overlay {
+    background: var(--bg-1);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .slipbar.has-picks {
+    background: var(--mint);
+  }
+}

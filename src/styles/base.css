@@ -1,0 +1,505 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--head-h) + 16px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: var(--fs-14);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+hr {
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 8px 12px;
+  border-radius: var(--r-2);
+  background: var(--mint);
+  color: var(--on-mint);
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Small uppercase label: the only place tracking is used */
+.label {
+  color: var(--text-3);
+  font-size: var(--fs-11);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  height: 44px;
+  padding: 0 var(--s-4);
+  border-radius: var(--r-2);
+  font-size: var(--fs-14);
+  font-weight: 650;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* The one primary action on any screen */
+.btn--primary {
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 var(--s-4) 0 var(--s-5);
+  background: var(--mint);
+  color: var(--on-mint);
+  font-size: var(--fs-16);
+  font-weight: 750;
+}
+
+.btn--primary:only-child,
+.btn--primary:not(:has(.btn__amount)) {
+  justify-content: center;
+}
+
+.btn__amount {
+  font-size: var(--fs-15);
+  font-weight: 650;
+  opacity: 0.8;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #ffffff;
+}
+
+.btn--secondary {
+  background: var(--bg-3);
+  color: var(--text-1);
+}
+
+.btn--secondary:hover {
+  background: var(--bg-4);
+}
+
+.btn--warn {
+  background: var(--warn);
+  color: #2a1c00;
+  font-weight: 750;
+}
+
+.btn--warn:hover {
+  background: #ffc955;
+}
+
+.btn--ghost {
+  color: var(--text-2);
+}
+
+.btn--ghost:hover {
+  color: var(--text-1);
+  background: var(--bg-3);
+}
+
+.btn:disabled {
+  background: var(--bg-3);
+  color: var(--text-3);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-2);
+  color: var(--text-2);
+  flex: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.icon-btn:hover:not(:disabled) {
+  color: var(--text-1);
+  background: var(--bg-3);
+}
+
+.icon-btn:disabled {
+  color: var(--text-3);
+}
+
+.link-btn {
+  color: var(--text-2);
+  font-size: var(--fs-13);
+  font-weight: 600;
+}
+
+.link-btn:hover:not(:disabled) {
+  color: var(--text-1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.chip-btn {
+  height: 30px;
+  padding: 0 var(--s-2);
+  border-radius: var(--r-1);
+  background: var(--bg-3);
+  color: var(--text-1);
+  font-size: var(--fs-13);
+  font-weight: 600;
+  transition: background-color 0.15s;
+}
+
+.chip-btn:hover:not(:disabled) {
+  background: var(--bg-4);
+}
+
+.chip-btn:disabled {
+  color: var(--text-3);
+  opacity: 0.6;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-2);
+  font-size: var(--fs-13);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.text-link:hover {
+  color: var(--text-1);
+}
+
+/* ---------- Status ---------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-1);
+  font-size: var(--fs-11);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tag--info {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tag--win {
+  background: rgba(63, 217, 139, 0.14);
+  color: var(--up);
+}
+
+.tag--muted {
+  background: var(--bg-3);
+  color: var(--text-2);
+}
+
+.tag--warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  flex: none;
+}
+
+/* A slow pulse says "this is moving" without flashing */
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+.fineprint {
+  color: var(--text-3);
+  font-size: var(--fs-12);
+}
+
+.fineprint--page {
+  margin-top: var(--s-2);
+}
+
+.quiet-note {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: var(--s-4);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--text-2);
+  font-size: var(--fs-14);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Empty / loading ---------- */
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-2);
+  padding: var(--s-8) var(--s-4);
+  text-align: center;
+}
+
+.empty__icon {
+  color: var(--text-3);
+}
+
+.empty__title {
+  font-size: var(--fs-18);
+  font-weight: 700;
+}
+
+.empty__text {
+  max-width: 36ch;
+  color: var(--text-2);
+  font-size: var(--fs-13);
+}
+
+.empty .btn {
+  margin-top: var(--s-2);
+}
+
+.skeleton {
+  border-radius: var(--r-2);
+  background: var(--bg-1);
+  animation: skeleton 1.2s ease-in-out infinite alternate;
+}
+
+.skeleton--title {
+  width: 200px;
+  height: 32px;
+  margin-bottom: var(--s-3);
+}
+
+.skeleton--row {
+  height: 64px;
+  margin-bottom: 2px;
+}
+
+/* Skeleton shaped like a competition group, so the layout doesn't jump on arrival */
+.skeleton-group {
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+
+.skeleton-group .skeleton {
+  display: block;
+  background: var(--bg-2);
+  animation-name: skeleton-in-group;
+}
+
+.skeleton-group__head {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.skeleton-group__row {
+  display: grid;
+  grid-template-columns: var(--col-when) minmax(0, 1fr) var(--col-odds) var(--col-more);
+  align-items: center;
+  height: 64px;
+  border-bottom: 1px solid var(--line);
+}
+
+.skeleton-group__row:last-child {
+  border-bottom: 0;
+}
+
+.skeleton-group__teams {
+  display: grid;
+  gap: 8px;
+}
+
+.skeleton-group__odds {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--odds-gap);
+}
+
+.skeleton--when {
+  width: 36px;
+  height: 14px;
+  margin-left: var(--s-4);
+}
+
+.skeleton--text {
+  width: 160px;
+  max-width: 80%;
+  height: 12px;
+}
+
+.skeleton--short {
+  width: 120px;
+}
+
+.skeleton--odds {
+  height: var(--odds-h);
+}
+
+@keyframes skeleton-in-group {
+  to {
+    background: var(--bg-3);
+  }
+}
+
+@media (max-width: 1099px) {
+  .skeleton-group__row {
+    grid-template-columns: 52px minmax(0, 1fr) var(--col-odds);
+    padding-right: var(--s-3);
+  }
+
+  .skeleton--when {
+    margin-left: var(--s-3);
+  }
+}
+
+@keyframes skeleton {
+  to {
+    background: var(--bg-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .live-dot::after {
+    display: none;
+  }
+}

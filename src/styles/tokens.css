@@ -1,0 +1,123 @@
+/*
+ * Housebets design tokens — "Deep Water".
+ *
+ * Brand DNA kept from the live product: teal-black water, cyan prices,
+ * pale mint for the one primary action and for a chosen price, the wave mark.
+ *
+ * Rules that make it a system rather than a palette:
+ *   • Cyan is reserved for prices. If it is cyan, you can bet on it.
+ *   • Mint is reserved for commitment: a selected price, the place-bet action,
+ *     a potential return. Never decoration.
+ *   • Red is reserved for live. Amber for "needs your attention".
+ *   • Surfaces step up in three levels only: page → group → control.
+ *     Dividers separate rows inside a group; cards are not used for lists.
+ *
+ * Type: Archivo throughout. The width axis does the hierarchy work —
+ *   87% (semi-condensed) for page titles, team names on boards and scores,
+ *   100% for everything people read. Figures are always tabular.
+ */
+:root {
+  /* Surfaces: page → group → control */
+  --bg-0: #04141a;
+  --bg-1: #081c23;
+  --bg-2: #0d2630;
+  --bg-3: #13323d;
+  --bg-4: #1b404c;
+
+  /* Dividers */
+  --line: #102a33;
+  --line-strong: #1e4350;
+
+  /* Text */
+  --text-1: #e8f3f5;
+  --text-2: #a2bac2;
+  /* ≥4.5:1 on every surface up to --bg-3 (measured) */
+  --text-3: #7f9ea8;
+
+  /* Brand */
+  --accent: #46d3ea;
+  --accent-soft: rgba(70, 211, 234, 0.1);
+  --mint: #c6f6f2;
+  --mint-soft: rgba(198, 246, 242, 0.08);
+  --on-mint: #03262c;
+
+  /* Status */
+  --live: #ff5d70;
+  --on-live: #2a0309;
+  --live-soft: rgba(255, 79, 100, 0.12);
+  --up: #3fd98b;
+  --down: #ff7272;
+  --warn: #f3b63f;
+  --warn-soft: rgba(243, 182, 63, 0.1);
+  --danger: #ff6464;
+  --danger-soft: rgba(255, 100, 100, 0.1);
+  --star: #f2c14e;
+  --focus: #c6f6f2;
+
+  /* Type */
+  --font: var(--font-archivo), system-ui, sans-serif;
+  --fs-11: 0.6875rem;
+  --fs-12: 0.75rem;
+  --fs-13: 0.8125rem;
+  --fs-14: 0.875rem;
+  --fs-15: 0.9375rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-20: 1.25rem;
+  --fs-24: 1.5rem;
+  --fs-32: 2rem;
+
+  /* Spacing — 4px base */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+
+  /* Radius: controls, groups, sheets */
+  --r-1: 4px;
+  --r-2: 6px;
+  --r-3: 10px;
+  --r-sheet: 14px;
+
+  /* Layout */
+  --top-h: 60px;
+  --ticker-h: 36px;
+  --head-h: calc(var(--top-h) + var(--ticker-h));
+  --nav-w: 228px;
+  --panel-w: 352px;
+  --tabbar-h: 58px;
+  --slipbar-h: 52px;
+
+  /* Match-row columns, shared so prices line up across every list */
+  --odds-w: 74px;
+  --odds-h: 42px;
+  --odds-gap: 4px;
+  --col-when: 76px;
+  --col-odds: calc(var(--odds-w) * 3 + var(--odds-gap) * 2);
+  --col-more: 52px;
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Narrow desktop: the sidebar folds to an icon rail */
+@media (max-width: 1279px) {
+  :root {
+    --nav-w: 76px;
+    --panel-w: 324px;
+    --odds-w: 64px;
+  }
+}
+
+@media (max-width: 1099px) {
+  :root {
+    --top-h: 54px;
+    --ticker-h: 34px;
+    --odds-w: 58px;
+    --odds-h: 44px;
+    --col-more: 0px;
+  }
+}
