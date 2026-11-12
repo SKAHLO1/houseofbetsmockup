@@ -1169,6 +1169,46 @@
   color: var(--text-1);
 }
 
+/* Live pick: clock, scoreline and period detail on one scannable line */
+.pick__match--live {
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-top: 4px;
+  color: var(--text-2);
+}
+
+.pick__clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-1);
+  background: var(--live-soft);
+  color: var(--live);
+  font-size: var(--fs-12);
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.pick__scoreline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.pick__scoreline b {
+  color: var(--text-1);
+  font-size: var(--fs-13);
+  font-weight: 800;
+}
+
+.pick__detail {
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
 .pick__odds {
   color: var(--accent);
   font-size: var(--fs-18);

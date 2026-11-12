@@ -1,15 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { eventName, formatMoney, formatOdds } from '@/lib/format';
+import { getTeam } from '@/lib/data/catalog';
+import { eventName, formatMoney, formatOdds, liveClock } from '@/lib/format';
 import { useStore, type SlipLine } from '@/lib/store';
 import { Icon } from '../ui/Icon';
 import { StakeInput } from './StakeInput';
 
 /** One single bet in the slip: selection, price, stake and its own returns. */
 export function SlipPick({ line, locked }: { line: SlipLine; locked: boolean }) {
-  const { dispatch } = useStore();
+  const { state, dispatch } = useStore();
   const { selection, market, event, item } = line;
+  const live = event.status === 'live';
+  const home = getTeam(event.home);
+  const away = getTeam(event.away);
+  // Football minutes advance with the prototype clock; other sports show their period ("Q3 4:12", "2nd set", "Map 2").
+  const clock = liveClock(event, state.elapsed);
   const drift = line.odds > item.acceptedOdds ? 'up' : 'down';
 
   return (
@@ -18,10 +24,33 @@ export function SlipPick({ line, locked }: { line: SlipLine; locked: boolean }) 
         <div className="pick__what">
           <span className="pick__selection">{selection.label}</span>
           <span className="pick__market">{market.name}</span>
-          <Link href={`/match/${event.id}`} className="pick__match">
-            {event.status === 'live' && <span className="live-dot" aria-hidden="true" />}
-            {eventName(event)}
-          </Link>
+          {live ? (
+            /* In play: current score and clock, so the pick is judged against the match as it stands */
+            <Link
+              href={`/match/${event.id}`}
+              className="pick__match pick__match--live"
+              aria-label={`Live: ${home.short} ${event.score?.[0]}, ${away.short} ${event.score?.[1]}, ${clock}${
+                event.scoreDetail ? `, ${event.scoreDetail}` : ''
+              }. Open match`}
+            >
+              <span className="pick__clock">
+                <span className="live-dot" aria-hidden="true" />
+                {clock}
+              </span>
+              <span className="pick__scoreline">
+                {home.short}
+                <b>
+                  {event.score?.[0]}–{event.score?.[1]}
+                </b>
+                {away.short}
+              </span>
+              {event.scoreDetail && <span className="pick__detail">{event.scoreDetail}</span>}
+            </Link>
+          ) : (
+            <Link href={`/match/${event.id}`} className="pick__match">
+              {eventName(event)}
+            </Link>
+          )}
         </div>
         <div className="pick__price">
           {line.suspended ? (
