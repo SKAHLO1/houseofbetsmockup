@@ -3,6 +3,8 @@
  * freely licensed on Wikimedia Commons; the credit is rendered on the hero as
  * the licence requires. Files live in /public/leagues (1920px Commons renditions).
  */
+import { getCompetition } from './catalog';
+
 export interface LeagueHero {
   image: string;
   alt: string;
@@ -69,5 +71,10 @@ export const LEAGUE_HEROES: Record<string, LeagueHero> = {
   },
 };
 
-/** Where a competition's own page lives. */
-export const leagueHref = (competitionId: string) => `/league/${competitionId}`;
+/**
+ * Where a competition's own page lives. Football leagues sit under the
+ * Football section (/football/premier-league); other sports use /league/[id].
+ */
+export function leagueHref(competitionId: string): string {
+  return getCompetition(competitionId).sportId === 'football' ? `/football/${competitionId}` : `/league/${competitionId}`;
+}

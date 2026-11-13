@@ -9,6 +9,7 @@ import type { SportEvent, Team } from '@/lib/types';
 import { sportHref } from '../shell/Sidebar';
 import { Crest } from '../ui/Crest';
 import { FollowButton } from '../ui/FollowButton';
+import { leagueHref } from '@/lib/data/leagues';
 
 function periodLabel(event: SportEvent, elapsed: number): string | null {
   if (event.minute === undefined) return event.scoreDetail ?? null;
@@ -43,7 +44,7 @@ export function Scoreboard({ event }: { event: SportEvent }) {
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href={sportHref(sport.id)}>{sport.name}</Link>
         <span aria-hidden="true">/</span>
-        <Link href={`/league/${competition.id}`}>{competition.name}</Link>
+        <Link href={leagueHref(competition.id)}>{competition.name}</Link>
       </nav>
 
       <h1 className="sr-only">

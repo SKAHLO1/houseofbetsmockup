@@ -1,6 +1,7 @@
 import { ALL_TEAMS, COMPETITIONS, getTeam } from './catalog';
 import { EVENTS } from './events';
 import { MARKETS_BY_EVENT } from './markets';
+import { leagueHref } from './leagues';
 
 export type SearchKind = 'Teams' | 'Players' | 'Competitions' | 'Markets';
 
@@ -74,7 +75,7 @@ export function search(query: string): SearchResult[] {
     id: `comp-${c.id}`,
     title: c.name,
     detail: `${c.region} · ${EVENTS.filter((e) => e.competitionId === c.id).length} matches`,
-    href: `/league/${c.id}`,
+    href: leagueHref(c.id),
   }));
 
   const markets: SearchResult[] = [];

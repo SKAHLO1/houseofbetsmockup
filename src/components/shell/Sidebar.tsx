@@ -7,6 +7,7 @@ import { EVENTS, liveEvents } from '@/lib/data/events';
 import { useStore } from '@/lib/store';
 import type { SportId } from '@/lib/types';
 import { Icon, type IconName } from '../ui/Icon';
+import { leagueHref } from '@/lib/data/leagues';
 
 /** Football has its own page; other sports open the home board filtered to that sport. */
 export function sportHref(id: SportId): string {
@@ -38,7 +39,7 @@ function useNavItems() {
     href: sportHref(sport.id),
     label: sport.name,
     icon: sport.id,
-    active: sport.id === 'football' ? pathname === '/football' : pathname === '/' && activeSport === sport.id,
+    active: sport.id === 'football' ? pathname === '/football' || pathname.startsWith('/football/') : pathname === '/' && activeSport === sport.id,
     count: EVENTS.filter((e) => e.sportId === sport.id).length,
   }));
   const bets: NavItem = {
@@ -48,7 +49,7 @@ function useNavItems() {
     active: pathname === '/bets',
     badge: state.slip.length || undefined,
   };
-  return { primary, sports, bets, followed: state.followedCompetitions };
+  return { primary, sports, bets, followed: state.followedCompetitions, pathname };
 }
 
 /** Desktop: a narrow icon rail so the board gets the width. */
@@ -86,7 +87,7 @@ function Rail() {
 
 /** Mobile drawer: the full list, including top competitions. */
 function FullNav({ onNavigate }: { onNavigate?: () => void }) {
-  const { primary, sports, bets, followed } = useNavItems();
+  const { primary, sports, bets, followed, pathname } = useNavItems();
 
   const link = (item: NavItem) => (
     <li key={item.href}>
@@ -111,7 +112,12 @@ function FullNav({ onNavigate }: { onNavigate?: () => void }) {
       <ul className="sidenav__list">
         {TOP_COMPETITIONS.map((comp) => (
           <li key={comp.id}>
-            <Link href={`/league/${comp.id}`} className="sidenav__link sidenav__link--plain" onClick={onNavigate}>
+            <Link
+              href={leagueHref(comp.id)}
+              className="sidenav__link sidenav__link--plain"
+              aria-current={pathname === leagueHref(comp.id) ? 'page' : undefined}
+              onClick={onNavigate}
+            >
               <span className="sidenav__label">{comp.name}</span>
               {followed.includes(comp.id) && (
                 <span className="sidenav__star">

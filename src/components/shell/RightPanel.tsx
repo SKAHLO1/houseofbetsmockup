@@ -7,6 +7,7 @@ import { formatMoney } from '@/lib/format';
 import { useStore } from '@/lib/store';
 import { BettingPanel } from '../betting/BettingPanel';
 import { Crest } from '../ui/Crest';
+import { leagueHref } from '@/lib/data/leagues';
 
 /**
  * On the Bets page the slip lives in the main column, so the side panel
@@ -52,7 +53,7 @@ function AccountPanel() {
           <ul className="account__follows">
             {state.followedCompetitions.map((id) => (
               <li key={id}>
-                <Link href={`/league/${id}`}>{getCompetition(id).name}</Link>
+                <Link href={leagueHref(id)}>{getCompetition(id).name}</Link>
               </li>
             ))}
             {state.followedTeams.map((id) => (

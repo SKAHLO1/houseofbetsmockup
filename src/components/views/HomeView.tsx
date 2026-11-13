@@ -12,6 +12,7 @@ import { MatchRow } from '../match/MatchRow';
 import { FollowButton } from '../ui/FollowButton';
 import { Icon } from '../ui/Icon';
 import { SectionHeader } from '../ui/SectionHeader';
+import { leagueHref } from '@/lib/data/leagues';
 
 const HOME_LIVE_ROWS = 5;
 
@@ -122,7 +123,7 @@ function CompetitionIndex() {
         const next = events.find((e) => e.status === 'upcoming');
         return (
           <li key={comp.id} className="index__item">
-            <Link href={`/league/${comp.id}`} className="index__link">
+            <Link href={leagueHref(comp.id)} className="index__link">
               <span className="index__num" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>

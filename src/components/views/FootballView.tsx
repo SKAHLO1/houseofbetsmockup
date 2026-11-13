@@ -10,6 +10,7 @@ import { Crest } from '../ui/Crest';
 import { FollowButton } from '../ui/FollowButton';
 import { Icon } from '../ui/Icon';
 import { SectionHeader } from '../ui/SectionHeader';
+import { leagueHref } from '@/lib/data/leagues';
 
 function Following() {
   const { state, dispatch } = useStore();
@@ -30,10 +31,10 @@ function Following() {
         <ul className="following__chips">
           {followedCompetitions.map((id) => (
             <li key={id} className="follow-chip">
-              <a href={`#${id}`} className="follow-chip__link">
+              <Link href={leagueHref(id)} className="follow-chip__link">
                 <Icon name="star-filled" size={12} className="follow-chip__star" />
                 {getCompetition(id).name}
-              </a>
+              </Link>
               <button
                 type="button"
                 className="follow-chip__remove"
@@ -100,10 +101,10 @@ export function FootballView() {
 
       <nav className="jump" aria-label="Jump to competition">
         {TOP_COMPETITIONS.map((comp) => (
-          <a key={comp.id} href={`#${comp.id}`} className="jump__link">
+          <Link key={comp.id} href={leagueHref(comp.id)} className="jump__link">
             {comp.name}
             <span className="jump__count">{eventsByCompetition(comp.id).length}</span>
-          </a>
+          </Link>
         ))}
       </nav>
 
@@ -122,7 +123,7 @@ export function FootballView() {
             followable
             actions={
               <span className="comp__action-group">
-                <Link href={`/league/${comp.id}`} className="text-link comp__league-link">
+                <Link href={leagueHref(comp.id)} className="text-link comp__league-link">
                   League page <Icon name="chevron-right" size={14} />
                 </Link>
                 <FollowButton kind="competition" id={comp.id} name={comp.name} labelled />
