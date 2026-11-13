@@ -7,6 +7,8 @@ import '@/styles/base.css';
 import '@/styles/shell.css';
 import '@/styles/components.css';
 import '@/styles/pages.css';
+import '@/styles/pitch.css';
+import '@/styles/league.css';
 import '@/styles/glass.css';
 
 /*

@@ -7,6 +7,7 @@ import { MARKET_GROUPS, getMarkets } from '@/lib/data/markets';
 import { liveClock } from '@/lib/format';
 import { useStore } from '@/lib/store';
 import type { MarketGroupId, SportEvent } from '@/lib/types';
+import { LivePitch } from '../match/LivePitch';
 import { MarketCard } from '../match/MarketCard';
 import { Scoreboard } from '../match/Scoreboard';
 import { Crest } from '../ui/Crest';
@@ -64,6 +65,8 @@ export function MatchView({ eventId, initialGroup }: { eventId: string; initialG
       <div ref={boardRef}>
         <Scoreboard event={event} />
       </div>
+
+      {event.sportId === 'football' && event.status === 'live' && <LivePitch event={event} />}
 
       <div className={`market-nav ${boardHidden ? 'has-mini' : ''}`}>
         {boardHidden && <MiniBoard event={event} />}

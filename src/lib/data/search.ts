@@ -74,7 +74,7 @@ export function search(query: string): SearchResult[] {
     id: `comp-${c.id}`,
     title: c.name,
     detail: `${c.region} · ${EVENTS.filter((e) => e.competitionId === c.id).length} matches`,
-    href: c.sportId === 'football' ? `/football#${c.id}` : `/?sport=${c.sportId}`,
+    href: `/league/${c.id}`,
   }));
 
   const markets: SearchResult[] = [];

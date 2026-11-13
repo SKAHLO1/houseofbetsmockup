@@ -43,7 +43,7 @@ export function Scoreboard({ event }: { event: SportEvent }) {
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href={sportHref(sport.id)}>{sport.name}</Link>
         <span aria-hidden="true">/</span>
-        <Link href={sport.id === 'football' ? `/football#${competition.id}` : sportHref(sport.id)}>{competition.name}</Link>
+        <Link href={`/league/${competition.id}`}>{competition.name}</Link>
       </nav>
 
       <h1 className="sr-only">

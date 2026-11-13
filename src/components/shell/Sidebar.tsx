@@ -111,7 +111,7 @@ function FullNav({ onNavigate }: { onNavigate?: () => void }) {
       <ul className="sidenav__list">
         {TOP_COMPETITIONS.map((comp) => (
           <li key={comp.id}>
-            <Link href={`/football#${comp.id}`} className="sidenav__link sidenav__link--plain" onClick={onNavigate}>
+            <Link href={`/league/${comp.id}`} className="sidenav__link sidenav__link--plain" onClick={onNavigate}>
               <span className="sidenav__label">{comp.name}</span>
               {followed.includes(comp.id) && (
                 <span className="sidenav__star">

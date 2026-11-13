@@ -1,0 +1,456 @@
+/* ---------- Live match tracker ----------
+   A simulated top-down view of a live football match. The pitch is drawn to
+   scale (105 × 68 m) and keeps its aspect ratio; the ball is an HTML marker
+   positioned in percentages so its label text stays crisp at any size. */
+
+.tracker {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+
+.tracker__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 46px;
+  padding: 0 var(--s-2) 0 var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.tracker__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-15);
+  font-weight: 750;
+}
+
+.tracker__sim {
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--bg-3);
+  color: var(--text-2);
+  font-size: var(--fs-11);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tracker__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 34px;
+  margin-left: auto;
+  padding: 0 var(--s-2) 0 var(--s-3);
+  border-radius: var(--r-2);
+  color: var(--text-2);
+  font-size: var(--fs-13);
+  font-weight: 650;
+}
+
+.tracker__toggle:hover {
+  background: var(--bg-3);
+  color: var(--text-1);
+}
+
+.tracker__toggle svg {
+  transition: transform 0.2s var(--ease);
+  transform: rotate(180deg);
+}
+
+.tracker__toggle svg.is-closed {
+  transform: none;
+}
+
+.tracker__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(220px, 1fr);
+  gap: var(--s-4);
+  padding: var(--s-4);
+}
+
+/* ---------- Pitch ---------- */
+
+.pitch {
+  position: relative;
+  aspect-ratio: 105 / 68;
+  border-radius: var(--r-2);
+  background: #0b2d29;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.pitch__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pitch__svg rect:not([class]) {
+  fill: transparent;
+}
+
+.pitch__stripe {
+  fill: rgba(255, 255, 255, 0.025);
+}
+
+.pitch__line {
+  fill: none;
+  stroke: rgba(232, 243, 245, 0.32);
+  stroke-width: 0.3;
+}
+
+.pitch__spot {
+  fill: rgba(232, 243, 245, 0.45);
+}
+
+.pitch__goal {
+  fill: rgba(232, 243, 245, 0.7);
+}
+
+/* The last pass or carry, drawn as a dashed line that runs out behind the ball */
+.pitch__trail {
+  stroke-width: 0.45;
+  stroke-linecap: round;
+  stroke-dasharray: 1.2 1;
+  opacity: 0.85;
+  animation: trail-fade 1.5s ease-out forwards;
+}
+
+.pitch__trail--shot {
+  stroke-width: 0.7;
+  stroke-dasharray: none;
+}
+
+@keyframes trail-fade {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+/* Attacking zone shading for the side in possession */
+.pitch__zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: width 0.6s var(--ease), opacity 0.4s;
+}
+
+.pitch__zone--home {
+  right: 0;
+  background: linear-gradient(270deg, color-mix(in srgb, var(--team) 34%, transparent), transparent);
+}
+
+.pitch__zone--away {
+  left: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--team) 34%, transparent), transparent);
+}
+
+.pitch__zone--attack {
+  width: 42%;
+  opacity: 0.55;
+}
+
+.pitch__zone--danger {
+  width: 24%;
+  opacity: 1;
+  animation: danger-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes danger-pulse {
+  50% {
+    opacity: 0.65;
+  }
+}
+
+/* Attack direction labels */
+.pitch__dir {
+  position: absolute;
+  bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: rgba(232, 243, 245, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pitch__dir--home {
+  left: 8px;
+}
+
+.pitch__dir--away {
+  right: 8px;
+}
+
+.pitch__flip {
+  transform: rotate(180deg);
+}
+
+/* ---------- Ball and player label ---------- */
+
+.pitch__ball {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  transition: left 0.95s cubic-bezier(0.35, 0.05, 0.25, 1), top 0.95s cubic-bezier(0.35, 0.05, 0.25, 1);
+}
+
+.pitch__ball--dribble {
+  transition-duration: 1.3s;
+  transition-timing-function: linear;
+}
+
+.pitch__ball--shot {
+  transition-duration: 0.45s;
+  transition-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.pitch__ball--restart {
+  transition-duration: 0.35s;
+}
+
+.pitch__marker {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 2.5px var(--team), 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Soft ring so the ball can be found at a glance */
+.pitch__marker::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--team);
+  opacity: 0;
+  animation: ball-ring 1.5s ease-out infinite;
+}
+
+@keyframes ball-ring {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.pitch__name {
+  position: absolute;
+  left: 0;
+  bottom: 12px;
+  transform: translateX(-50%);
+  padding: 2px 7px;
+  border-radius: var(--r-1);
+  background: var(--team);
+  color: var(--team-fg);
+  font-size: var(--fs-12);
+  font-weight: 750;
+  line-height: 1.3;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* Near the top edge, the label flips below the ball so it isn't clipped */
+.pitch__ball--low .pitch__name {
+  bottom: auto;
+  top: 12px;
+}
+
+/* ---------- Side panel ---------- */
+
+.tracker__side {
+  display: grid;
+  align-content: start;
+  gap: var(--s-4);
+  min-width: 0;
+}
+
+.tracker__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-2);
+  background: var(--bg-2);
+}
+
+.tracker__status span:last-child {
+  display: grid;
+  line-height: 1.25;
+  color: var(--text-2);
+  font-size: var(--fs-12);
+}
+
+.tracker__status b {
+  color: var(--text-1);
+  font-size: var(--fs-14);
+  font-weight: 750;
+}
+
+.tracker__swatch {
+  width: 4px;
+  align-self: stretch;
+  border-radius: 2px;
+  background: var(--team);
+}
+
+.tracker__status--danger {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--team) 60%, transparent);
+}
+
+.possession {
+  display: grid;
+  gap: 6px;
+}
+
+.possession__labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--fs-13);
+  font-weight: 650;
+}
+
+.possession__labels--pct {
+  color: var(--text-2);
+  font-size: var(--fs-12);
+}
+
+.possession__bar {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+}
+
+.possession__bar span {
+  border-radius: 3px;
+  transition: width 0.6s var(--ease);
+}
+
+.tracker__feed {
+  display: grid;
+  gap: 2px;
+}
+
+.feed-item {
+  display: grid;
+  grid-template-columns: 28px 3px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: var(--fs-13);
+  line-height: 1.35;
+  animation: feed-in 0.35s var(--ease);
+}
+
+.feed-item:last-child {
+  border-bottom: 0;
+}
+
+.feed-item__min {
+  color: var(--text-3);
+  font-weight: 700;
+}
+
+.feed-item__bar {
+  align-self: stretch;
+  border-radius: 2px;
+}
+
+.feed-item--big .feed-item__text {
+  color: var(--text-1);
+  font-weight: 650;
+}
+
+.tracker__empty {
+  color: var(--text-3);
+  font-size: var(--fs-13);
+}
+
+@keyframes feed-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* ---------- Narrow layouts: pitch on top, panel below ---------- */
+
+@media (max-width: 1279px) {
+  .tracker__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tracker__feed .feed-item:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+@media (max-width: 1099px) {
+  .tracker {
+    margin: 0 calc(var(--s-4) * -1);
+    border-width: 0 0 1px;
+    border-radius: 0;
+  }
+
+  .tracker__head {
+    padding-left: var(--s-4);
+  }
+
+  .tracker__body {
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4) var(--s-4);
+  }
+
+  .pitch__name {
+    font-size: var(--fs-11);
+    padding: 1px 5px;
+  }
+
+  .pitch__marker {
+    left: -5px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* Reduced motion: the ball still moves, but without gliding or pulsing */
+@media (prefers-reduced-motion: reduce) {
+  .pitch__ball,
+  .pitch__zone {
+    transition: none;
+  }
+
+  .pitch__zone--danger,
+  .pitch__marker::after {
+    animation: none;
+  }
+}

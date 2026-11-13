@@ -52,7 +52,7 @@ function AccountPanel() {
           <ul className="account__follows">
             {state.followedCompetitions.map((id) => (
               <li key={id}>
-                <Link href={`/football#${id}`}>{getCompetition(id).name}</Link>
+                <Link href={`/league/${id}`}>{getCompetition(id).name}</Link>
               </li>
             ))}
             {state.followedTeams.map((id) => (

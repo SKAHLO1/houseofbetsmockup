@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { TOP_COMPETITIONS, getCompetition, getTeam } from '@/lib/data/catalog';
 import { EVENTS, eventsByCompetition } from '@/lib/data/events';
 import { useStore } from '@/lib/store';
@@ -119,7 +120,14 @@ export function FootballView() {
             events={eventsByCompetition(comp.id)}
             collapsible
             followable
-            actions={<FollowButton kind="competition" id={comp.id} name={comp.name} labelled />}
+            actions={
+              <span className="comp__action-group">
+                <Link href={`/league/${comp.id}`} className="text-link comp__league-link">
+                  League page <Icon name="chevron-right" size={14} />
+                </Link>
+                <FollowButton kind="competition" id={comp.id} name={comp.name} labelled />
+              </span>
+            }
           />
         ))}
       </section>

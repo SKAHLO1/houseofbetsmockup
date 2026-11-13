@@ -122,7 +122,7 @@ function CompetitionIndex() {
         const next = events.find((e) => e.status === 'upcoming');
         return (
           <li key={comp.id} className="index__item">
-            <Link href={`/football#${comp.id}`} className="index__link">
+            <Link href={`/league/${comp.id}`} className="index__link">
               <span className="index__num" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>

@@ -1,0 +1,190 @@
+/* ---------- League page ---------- */
+
+.crumbs--page {
+  padding: 0;
+  margin-bottom: calc(var(--s-6) * -1);
+}
+
+.page-head__action {
+  margin-left: auto;
+}
+
+/* Photo hero: the league's most-followed club, faded into the page so the
+   league name and the match list below stay the focus. */
+.league-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--s-2) var(--s-6);
+  min-height: 320px;
+  padding: var(--s-6);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+
+.league-hero__img {
+  z-index: -2;
+  object-fit: cover;
+  filter: saturate(0.92);
+  transform: scale(1.03);
+  animation: hero-settle 1.2s var(--ease) both;
+}
+
+@keyframes hero-settle {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+/* Fade: dissolves into the page at the bottom and darkens behind the title */
+.league-hero__fade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(0deg, var(--bg-0) 0%, rgba(4, 20, 26, 0.7) 22%, rgba(4, 20, 26, 0.12) 55%, rgba(4, 20, 26, 0) 100%),
+    linear-gradient(90deg, rgba(4, 20, 26, 0.55) 0%, rgba(4, 20, 26, 0) 50%);
+}
+
+.league-hero__content {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.league-hero__region {
+  color: var(--text-2);
+  font-size: var(--fs-12);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.league-hero__title {
+  font-size: 3rem;
+  font-stretch: 87%;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+
+.league-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-top: 4px;
+  color: var(--text-2);
+  font-size: var(--fs-14);
+  font-weight: 600;
+}
+
+.league-hero__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--live);
+}
+
+/* Follow sits top-right on a small frosted plate so it reads over any photo */
+.league-hero__actions {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+}
+
+.league-hero__actions .follow--labelled {
+  background: rgba(4, 20, 26, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  color: var(--text-1);
+}
+
+.league-hero__actions .follow--labelled:hover {
+  background: rgba(4, 20, 26, 0.8);
+}
+
+/* Licence credit: required, but quiet */
+.league-hero__credit {
+  justify-self: end;
+  max-width: 34ch;
+  color: var(--text-3);
+  font-size: var(--fs-11);
+  line-height: 1.4;
+  text-align: right;
+}
+
+.league-hero__credit a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-decoration-color: rgba(162, 186, 194, 0.4);
+  text-underline-offset: 2px;
+}
+
+.league-hero__credit a:hover {
+  color: var(--text-1);
+}
+
+@media (max-width: 1099px) {
+  .crumbs--page {
+    margin-bottom: calc(var(--s-5) * -1);
+  }
+
+  .league-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 260px;
+    margin: 0 calc(var(--s-4) * -1);
+    padding: var(--s-5) var(--s-4) var(--s-4);
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  .league-hero__title {
+    font-size: 2.25rem;
+  }
+
+  .league-hero__credit {
+    justify-self: start;
+    max-width: none;
+    text-align: left;
+  }
+
+  .league-hero__actions {
+    top: var(--s-3);
+    right: var(--s-3);
+  }
+
+  .league-hero__actions .follow--labelled span {
+    display: inline;
+  }
+
+  .league-hero__actions .follow--labelled {
+    width: auto;
+    padding: 0 var(--s-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .league-hero__img {
+    animation: none;
+  }
+}
+
+/* Football page: league headers link through to their league page */
+.comp__action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+@media (max-width: 1099px) {
+  .comp__league-link {
+    display: none;
+  }
+}
