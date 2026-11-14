@@ -11,13 +11,17 @@
  *   edge     — a bright top hairline (specular highlight) and faint rim
  */
 :root {
-  --glass-tint: rgba(10, 34, 43, 0.58);
-  --glass-tint-strong: rgba(9, 30, 38, 0.78);
-  --glass-blur: blur(22px) saturate(180%);
-  --glass-blur-strong: blur(32px) saturate(170%);
-  --glass-rim: rgba(255, 255, 255, 0.09);
-  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(255, 255, 255, 0.03);
-  --glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 45%);
+  --glass-tint: rgba(10, 34, 43, 0.3);
+  --glass-tint-strong: rgba(9, 30, 38, 0.5);
+  /* Clearest glass, for the floating bottom capsules: mostly the page shows through */
+  --glass-tint-clear: rgba(12, 38, 48, 0.12);
+  --glass-blur: blur(20px) saturate(210%);
+  --glass-blur-strong: blur(30px) saturate(200%);
+  /* Clear glass needs more blur to keep labels readable over busy rows */
+  --glass-blur-clear: blur(14px) saturate(230%) brightness(1.1);
+  --glass-rim: rgba(255, 255, 255, 0.15);
+  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.26), inset 0 -1px 0 rgba(255, 255, 255, 0.07);
+  --glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0) 70%);
   --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
@@ -150,10 +154,20 @@
     position: relative;
     overflow: hidden;
     border: 0;
-    background: var(--glass-sheen), var(--glass-tint-strong);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    box-shadow: var(--glass-edge), 0 0 0 1px var(--glass-rim), var(--glass-shadow);
+    background: var(--glass-sheen), var(--glass-tint-clear);
+    backdrop-filter: var(--glass-blur-clear);
+    -webkit-backdrop-filter: var(--glass-blur-clear);
+    box-shadow: var(--glass-edge), 0 0 0 1px var(--glass-rim), 0 12px 32px rgba(0, 0, 0, 0.28);
+  }
+
+  /* Over clear glass, lift inactive labels a step and give text a soft halo */
+  .tabbar__link {
+    color: var(--text-2);
+  }
+
+  .tabbar__link,
+  .slipbar:not(.has-picks) {
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
   }
 
   /* Slip bar: a pill that sits above the tab bar */
@@ -172,7 +186,7 @@
 
   /* With picks, the pill fills with tinted mint glass */
   .slipbar.has-picks {
-    background: var(--glass-sheen), rgba(198, 246, 242, 0.88);
+    background: var(--glass-sheen), rgba(198, 246, 242, 0.66);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 0 1px rgba(198, 246, 242, 0.5), 0 10px 30px rgba(0, 0, 0, 0.35);
   }
 
