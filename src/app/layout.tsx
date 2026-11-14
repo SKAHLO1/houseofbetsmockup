@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Archivo } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { AppShell } from '@/components/shell/AppShell';
+import 'lenis/dist/lenis.css';
 import '@/styles/tokens.css';
 import '@/styles/base.css';
 import '@/styles/shell.css';

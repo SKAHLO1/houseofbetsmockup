@@ -9,6 +9,7 @@ import { LiveTicker } from './LiveTicker';
 import { MobileBars } from './MobileBars';
 import { RightPanel } from './RightPanel';
 import { Sidebar } from './Sidebar';
+import { SmoothScroll } from './SmoothScroll';
 import { TopBar } from './TopBar';
 
 function Shell({ children }: { children: ReactNode }) {
@@ -27,6 +28,7 @@ function Shell({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <SmoothScroll />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

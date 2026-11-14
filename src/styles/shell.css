@@ -528,7 +528,7 @@
   position: absolute;
   inset: 0;
   background: rgba(1, 8, 11, 0.72);
-  animation: fade 0.2s ease-out;
+  animation: fade 0.32s ease-out both;
 }
 
 .drawer__panel {
@@ -545,7 +545,7 @@
   max-height: 92dvh;
   border-radius: var(--r-sheet) var(--r-sheet) 0 0;
   box-shadow: 0 -1px 0 var(--line-strong);
-  animation: sheet-up 0.3s var(--ease);
+  animation: sheet-up 0.46s var(--ease-sheet) both;
 }
 
 /* Grab handle: tells the thumb this is a sheet */
@@ -567,7 +567,60 @@
   left: 0;
   width: min(300px, 86vw);
   border-right: 1px solid var(--line-strong);
-  animation: sheet-left 0.28s var(--ease);
+  animation: sheet-left 0.42s var(--ease-sheet) both;
+}
+
+/* Menu items settle in just behind the panel, top to bottom */
+.drawer--left .sidenav__link,
+.drawer--left .sidenav__heading {
+  animation: menu-item-in 0.42s var(--ease-sheet) both;
+}
+
+.drawer--left .sidenav__list:nth-of-type(1) .sidenav__link { animation-delay: 0.06s; }
+.drawer--left .sidenav__list:nth-of-type(2) .sidenav__link { animation-delay: 0.1s; }
+.drawer--left .sidenav__list:nth-of-type(3) .sidenav__link { animation-delay: 0.14s; }
+.drawer--left .sidenav__heading { animation-delay: 0.08s; }
+
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+}
+
+/* Closing: the panel accelerates away and the backdrop clears */
+.drawer.is-closing {
+  pointer-events: none;
+}
+
+.drawer.is-closing .drawer__backdrop {
+  animation: fade-out 0.26s ease-in forwards;
+}
+
+.drawer--left.is-closing .drawer__panel {
+  animation: sheet-left-out 0.26s var(--ease-exit) forwards;
+}
+
+.drawer--bottom.is-closing .drawer__panel {
+  animation: sheet-down 0.26s var(--ease-exit) forwards;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-left-out {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes sheet-down {
+  to {
+    transform: translateY(100%);
+  }
 }
 
 .drawer__head {
